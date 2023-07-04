@@ -43,6 +43,8 @@ type ContentProps = { user: User };
 function Content({ user }: ContentProps) {
   return (
     <Container>
+      <Space h="lg" />
+
       <UserProfile
         name={user.name}
         email={user.email}
