@@ -1,9 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import {
-  Container,
-  MantineProvider,
-  MantineThemeOverride,
-} from "@mantine/core";
+import { MantineProvider, MantineThemeOverride } from "@mantine/core";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
