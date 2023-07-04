@@ -1,4 +1,13 @@
-import { Avatar, Text, Button, Paper } from "@mantine/core";
+import {
+  Avatar,
+  Text,
+  Button,
+  Paper,
+  Flex,
+  Chip,
+  Space,
+  Title,
+} from "@mantine/core";
 
 interface UserProfileProps {
   avatar: string;
@@ -26,12 +35,23 @@ export function UserProfile({
       })}
     >
       <Avatar src={avatar} size={120} radius={120} mx="auto" />
-      <Text ta="center" fz="lg" weight={500} mt="md">
+      <Title ta="center" fz="lg" mt="md">
         {name}
-      </Text>
+      </Title>
+
       <Text ta="center" c="dimmed" fz="sm">
-        {email} • {hobbies.join(" • ")}
+        {email}
       </Text>
+
+      <Space h="lg" />
+
+      <Flex justify="center">
+        {hobbies.map((hobby) => (
+          <Chip checked={false}>{hobby}</Chip>
+        ))}
+      </Flex>
+
+      <Space h="lg" />
 
       <Button onClick={() => onEdit()} variant="default" fullWidth mt="md">
         Edit

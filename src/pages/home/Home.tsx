@@ -148,7 +148,7 @@ function UserItem({ user }: UserItemProps) {
 
           <Flex>
             {user.hobbies.map((hobby) => (
-              <Chip>{hobby}</Chip>
+              <Chip checked={false}>{hobby}</Chip>
             ))}
           </Flex>
         </Flex>
