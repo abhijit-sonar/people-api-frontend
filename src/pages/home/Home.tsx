@@ -9,6 +9,7 @@ import {
   Flex,
   Text,
   Button,
+  Chip,
 } from "@mantine/core";
 import { getJwtToken } from "../../credentialManager";
 import { useNavigate } from "react-router-dom";
@@ -145,33 +146,13 @@ function UserItem({ user }: UserItemProps) {
 
           <Space h={"sm"} />
 
-          <Flex gap={"sm"}>
+          <Flex>
             {user.hobbies.map((hobby) => (
-              <HobbyChip key={hobby} hobby={hobby} />
+              <Chip>{hobby}</Chip>
             ))}
           </Flex>
         </Flex>
       </Flex>
-    </Paper>
-  );
-}
-
-type HobbyChipProps = {
-  hobby: string;
-};
-function HobbyChip({ hobby }: HobbyChipProps) {
-  return (
-    <Paper
-      bg="blue"
-      radius={16}
-      sx={{
-        paddingRight: rem(12),
-        paddingLeft: rem(12),
-        paddingTop: rem(4),
-        paddingBottom: rem(4),
-      }}
-    >
-      <Text color="white">{hobby}</Text>
     </Paper>
   );
 }
