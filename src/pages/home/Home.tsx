@@ -1,21 +1,11 @@
 import { Fragment, useEffect, useState } from "react";
-import {
-  Container,
-  Title,
-  Space,
-  rem,
-  Avatar,
-  Paper,
-  Flex,
-  Text,
-  Button,
-  Chip,
-} from "@mantine/core";
+import { Container, Title, Space, rem, Text, Button } from "@mantine/core";
 import { getJwtToken } from "../../credentialManager";
 import { useNavigate } from "react-router-dom";
 import { fetchCurrentUser, listUsers } from "../../api";
 import { User } from "../../models/user";
 import { UserProfile } from "../../components/UserProfile";
+import UserItem from "../../components/UserItem";
 
 export type HomeProps = {};
 
@@ -121,38 +111,5 @@ function UsersList() {
 
       <Space h="lg"></Space>
     </div>
-  );
-}
-
-type UserItemProps = {
-  user: User;
-};
-
-function UserItem({ user }: UserItemProps) {
-  return (
-    <Paper withBorder p={"lg"}>
-      <Flex gap={"md"}>
-        <Avatar
-          src={`http://localhost:8000/api/users/${user._id}/avatar/`}
-          size={50}
-          radius={25}
-        ></Avatar>
-
-        <Flex direction={"column"}>
-          <Title size={"h3"}>{user.name}</Title>
-          <Text fz="sm" c="dimmed">
-            {user.email}
-          </Text>
-
-          <Space h={"sm"} />
-
-          <Flex>
-            {user.hobbies.map((hobby) => (
-              <Chip checked={false}>{hobby}</Chip>
-            ))}
-          </Flex>
-        </Flex>
-      </Flex>
-    </Paper>
   );
 }
