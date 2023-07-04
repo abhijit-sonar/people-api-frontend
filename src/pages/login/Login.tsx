@@ -3,11 +3,6 @@ import { login } from "../../api";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-import local from "./login.module.css";
-import global from "../../globalStyle.module.css";
-const style: any = {};
-Object.assign(style, global, local);
-
 type LoginFormData = {
   email: string;
   password: string;
@@ -19,7 +14,7 @@ export default function Login() {
   const [termsAccepted, setTermsAccepted] = useState(false);
 
   return (
-    <div className={style.container}>
+    <div>
       <h2>Login</h2>
       <Formik
         initialValues={{ email: "", password: "" }}
@@ -29,21 +24,11 @@ export default function Login() {
           });
         }}
       >
-        <Form className={style.form}>
-          <Field
-            className={style.textField}
-            name="email"
-            type="email"
-            placeholder="e-mail"
-          ></Field>
-          <Field
-            className={style.textField}
-            name="password"
-            type="password"
-            placeholder="Password"
-          ></Field>
+        <Form>
+          <Field name="email" type="email" placeholder="e-mail"></Field>
+          <Field name="password" type="password" placeholder="Password"></Field>
 
-          <div className={`${style.terms}`}>
+          <div>
             <input
               type="checkbox"
               id="checkbox-terms"
@@ -55,17 +40,13 @@ export default function Login() {
             </label>
           </div>
 
-          <button
-            type="submit"
-            disabled={!termsAccepted}
-            className={`${style.actionButton} ${style.mt3} ${style.large}`}
-          >
+          <button type="submit" disabled={!termsAccepted}>
             Login
           </button>
         </Form>
       </Formik>
 
-      <p className={`${style.mt1}`}>
+      <p>
         Don't have an account? <Link to={"/register"}>Create one</Link>
       </p>
     </div>

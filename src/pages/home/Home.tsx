@@ -1,13 +1,20 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import {
+  Container,
+  Title,
+  Space,
+  rem,
+  Avatar,
+  Paper,
+  Flex,
+  Text,
+  Button,
+} from "@mantine/core";
 import { getJwtToken } from "../../credentialManager";
 import { useNavigate } from "react-router-dom";
 import { fetchCurrentUser, listUsers } from "../../api";
 import { User } from "../../models/user";
-
-import global from "../../globalStyle.module.css";
-import local from "./home.module.css";
-const style: any = {};
-Object.assign(style, global, local);
+import { UserProfile } from "../../components/UserProfile";
 
 export type HomeProps = {};
 
@@ -37,38 +44,35 @@ export default function Home({}: HomeProps) {
 }
 
 function LoadingPage() {
-  return <p>Loading...</p>;
+  return <Text>Loading...</Text>;
 }
 
 type ContentProps = { user: User };
 
 function Content({ user }: ContentProps) {
   return (
-    <div className={`${style.container} ${style.pb1} ${style.pt1}`}>
-      <CurrentUserProfile user={user} />
-      <hr></hr>
+    <Container>
+      <UserProfile
+        name={user.name}
+        email={user.email}
+        hobbies={user.hobbies}
+        avatar={`http://localhost:8000/api/users/${user._id}/avatar`}
+        onEdit={() => {}}
+      />
 
-      <h4>All users</h4>
+      <Space h={"xl"} />
+
+      <Title
+        size={"h4"}
+        sx={{
+          paddingBottom: rem(3),
+        }}
+      >
+        All users
+      </Title>
 
       <UsersList />
-    </div>
-  );
-}
-
-function CurrentUserProfile({ user }: ContentProps) {
-  return (
-    <div className={`${style.hflex} ${style.flexAlignCenter} ${style.card}`}>
-      <img
-        className={style.avatar}
-        src={`http://localhost:8000/api/users/${user._id}/avatar/`}
-      ></img>
-
-      <div className={`${style.vflex} ${style.ml2} ${style.flexCenter}`}>
-        <h3>{user.name}</h3>
-        <p>{user.email}</p>
-        <button className={`${style.actionButton} ${style.mt1}`}>Edit</button>
-      </div>
-    </div>
+    </Container>
   );
 }
 
@@ -95,19 +99,26 @@ function UsersList() {
   }, []);
 
   return (
-    <div className={style.vflex}>
+    <div>
       {usersList.map((user) => (
-        <UserItem key={user._id} user={user} />
+        <Fragment key={user._id}>
+          <UserItem key={user._id} user={user} />
+          <Space h="sm" />
+        </Fragment>
       ))}
 
       {!endOfPagination && (
-        <button
+        <Button
+          sx={{
+            width: "100%",
+          }}
           onClick={() => loadMore()}
-          className={`${style.actionButton} ${style.mt1}`}
         >
           Load more
-        </button>
+        </Button>
       )}
+
+      <Space h="lg"></Space>
     </div>
   );
 }
@@ -118,23 +129,30 @@ type UserItemProps = {
 
 function UserItem({ user }: UserItemProps) {
   return (
-    <div className={`${style.hflex} ${style.card}`}>
-      <img
-        className={style.avatar}
-        src={`http://localhost:8000/api/users/${user._id}/avatar/`}
-      ></img>
+    <Paper withBorder p={"lg"}>
+      <Flex gap={"md"}>
+        <Avatar
+          src={`http://localhost:8000/api/users/${user._id}/avatar/`}
+          size={50}
+          radius={25}
+        ></Avatar>
 
-      <div className={`${style.vflex} ${style.ml2}`}>
-        <h3>{user.name}</h3>
-        <p>{user.email}</p>
+        <Flex direction={"column"}>
+          <Title size={"h3"}>{user.name}</Title>
+          <Text fz="sm" c="dimmed">
+            {user.email}
+          </Text>
 
-        <div className={`${style.hflex} ${style.flexWrap} ${style.mt1}`}>
-          {user.hobbies.map((hobby) => (
-            <HobbyChip key={hobby} hobby={hobby} />
-          ))}
-        </div>
-      </div>
-    </div>
+          <Space h={"sm"} />
+
+          <Flex gap={"sm"}>
+            {user.hobbies.map((hobby) => (
+              <HobbyChip key={hobby} hobby={hobby} />
+            ))}
+          </Flex>
+        </Flex>
+      </Flex>
+    </Paper>
   );
 }
 
@@ -142,5 +160,18 @@ type HobbyChipProps = {
   hobby: string;
 };
 function HobbyChip({ hobby }: HobbyChipProps) {
-  return <div className={`${style.hobbyChip}`}>{hobby}</div>;
+  return (
+    <Paper
+      bg="blue"
+      radius={16}
+      sx={{
+        paddingRight: rem(12),
+        paddingLeft: rem(12),
+        paddingTop: rem(4),
+        paddingBottom: rem(4),
+      }}
+    >
+      <Text color="white">{hobby}</Text>
+    </Paper>
+  );
 }

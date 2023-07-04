@@ -3,11 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { createAccount } from "../../api";
 
-import local from "./register.module.css";
-import global from "../../globalStyle.module.css";
-const style: any = {};
-Object.assign(style, global, local);
-
 type RegisterFormData = {
   email: string;
   password: string;
@@ -20,7 +15,7 @@ export default function Register() {
   const [termsAccepted, setTermsAccepted] = useState(false);
 
   return (
-    <div className={style.container}>
+    <div>
       <h2>Register</h2>
       <Formik
         initialValues={{
@@ -36,36 +31,16 @@ export default function Register() {
           });
         }}
       >
-        <Form className={style.form}>
-          <Field
-            className={style.textField}
-            type="text"
-            name="name"
-            placeholder="Name"
-          />
+        <Form>
+          <Field type="text" name="name" placeholder="Name" />
 
-          <Field
-            className={style.textField}
-            type="text"
-            name="hobbies"
-            placeholder="hobbies"
-          />
+          <Field type="text" name="hobbies" placeholder="hobbies" />
 
-          <Field
-            className={style.textField}
-            name="email"
-            type="email"
-            placeholder="e-mail"
-          ></Field>
+          <Field name="email" type="email" placeholder="e-mail"></Field>
 
-          <Field
-            className={style.textField}
-            name="password"
-            type="password"
-            placeholder="Password"
-          ></Field>
+          <Field name="password" type="password" placeholder="Password"></Field>
 
-          <div className={style.terms}>
+          <div>
             <input
               type="checkbox"
               id="checkbox-terms"
@@ -77,17 +52,13 @@ export default function Register() {
             </label>
           </div>
 
-          <button
-            type="submit"
-            disabled={!termsAccepted}
-            className={`${style.actionButton} ${style.large} ${style.mt3}`}
-          >
+          <button type="submit" disabled={!termsAccepted}>
             Register
           </button>
         </Form>
       </Formik>
 
-      <p className={`${style.mt1}`}>
+      <p>
         Have an account? <Link to={"/login"}>Login here.</Link>
       </p>
     </div>
