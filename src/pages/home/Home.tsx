@@ -50,7 +50,6 @@ function Content({ user }: ContentProps) {
         email={user.email}
         hobbies={user.hobbies}
         avatar={`http://localhost:8000/api/users/${user._id}/avatar`}
-        onEdit={() => {}}
       />
 
       <Space h={"xl"} />

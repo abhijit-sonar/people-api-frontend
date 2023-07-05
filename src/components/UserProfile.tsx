@@ -8,13 +8,13 @@ import {
   Space,
   Title,
 } from "@mantine/core";
+import { Link } from "react-router-dom";
 
 interface UserProfileProps {
   avatar: string;
   name: string;
   email: string;
   hobbies: Array<string>;
-  onEdit: () => void;
 }
 
 export function UserProfile({
@@ -22,7 +22,6 @@ export function UserProfile({
   name,
   email,
   hobbies,
-  onEdit,
 }: UserProfileProps) {
   return (
     <Paper
@@ -53,7 +52,13 @@ export function UserProfile({
 
       <Space h="lg" />
 
-      <Button onClick={() => onEdit()} variant="default" fullWidth mt="md">
+      <Button
+        component={Link}
+        to="edit-profile"
+        variant="default"
+        fullWidth
+        mt="md"
+      >
         Edit
       </Button>
     </Paper>

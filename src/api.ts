@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getJwtToken, login as persistJwt } from "./credentialManager";
-import { User } from "./models/user";
+import { User, UserUpdate } from "./models/user";
 
 axios.interceptors.request.use((config) => {
   const token = getJwtToken();
@@ -60,4 +60,8 @@ export async function listUsers(
   const users = response.data.items as Array<User>;
 
   return users;
+}
+
+export async function updateProfile(profileUpdate: UserUpdate) {
+  await axios.patch("http://localhost:8000/api/users/edit-profile", profileUpdate);
 }
