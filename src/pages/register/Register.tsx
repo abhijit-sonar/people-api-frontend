@@ -1,66 +1,127 @@
-import { Formik, Form, Field } from "formik";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { createAccount } from "../../api";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Button,
+  Checkbox,
+  Container,
+  Flex,
+  Space,
+  Text,
+  TextInput,
+  Title,
+  rem,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
 
-type RegisterFormData = {
-  email: string;
-  password: string;
+type LoginFormData = {
   name: string;
+  email: string;
   hobbies: string;
+  password: string;
+  termsAccepted: boolean;
 };
 
-export default function Register() {
+export default function Login() {
   const navigate = useNavigate();
-  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const form = useForm<LoginFormData>({
+    initialValues: {
+      name: "",
+      hobbies: "",
+      email: "",
+      password: "",
+      termsAccepted: false,
+    },
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      name: (value) => (value.length > 0 ? null : "Please enter your name"),
+      hobbies: (value) =>
+        value.length > 0 &&
+        value.split(" ").filter((hobby) => hobby.length > 0).length > 0
+          ? null
+          : "Please enter space separated list of hobbies",
+      password: (value) =>
+        value.length > 0 ? null : "Please enter your password",
+    },
+  });
 
   return (
-    <div>
-      <h2>Register</h2>
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-          name: "",
-          hobbies: "",
-        }}
-        onSubmit={(form: RegisterFormData) => {
-          const accountDetails = { ...form, hobbies: form.hobbies.split(" ") };
-          createAccount(accountDetails).then(() => {
-            navigate("/");
-          });
-        }}
+    <Container my="lg" pt={rem(64)}>
+      <Title ta="center" order={1}>
+        Register
+      </Title>
+
+      <Space h="lg" />
+
+      <form
+        onSubmit={form.onSubmit((values) => {
+          const accountDetails = {
+            ...values,
+            hobbies: values.hobbies.split(" "),
+          };
+
+          createAccount(accountDetails).then(() => navigate("/"));
+        })}
       >
-        <Form>
-          <Field type="text" name="name" placeholder="Name" />
+        <Flex direction="column" gap="sm">
+          <TextInput
+            name="name"
+            type="text"
+            placeholder="Someone"
+            label="Your name"
+            {...form.getInputProps("name")}
+          ></TextInput>
 
-          <Field type="text" name="hobbies" placeholder="hobbies" />
+          <TextInput
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            label="Your email"
+            {...form.getInputProps("email")}
+          ></TextInput>
 
-          <Field name="email" type="email" placeholder="e-mail"></Field>
+          <TextInput
+            name="hobbies"
+            type="text"
+            placeholder="music movies"
+            label="Your name"
+            {...form.getInputProps("hobbies")}
+          ></TextInput>
 
-          <Field name="password" type="password" placeholder="Password"></Field>
+          <TextInput
+            name="password"
+            type="password"
+            placeholder="Password"
+            label="Your password"
+            {...form.getInputProps("password")}
+          ></TextInput>
 
-          <div>
-            <input
-              type="checkbox"
+          <Flex align="center" gap="sm">
+            <Checkbox
+              name="termsAccepted"
               id="checkbox-terms"
-              checked={termsAccepted}
-              onChange={(e) => setTermsAccepted(e.target.checked)}
+              {...form.getInputProps("termsAccepted")}
             />
-            <label htmlFor="checkbox-terms">
-              I agree to the terms of service
-            </label>
-          </div>
 
-          <button type="submit" disabled={!termsAccepted}>
+            <Text component="label" htmlFor="checkbox-terms">
+              I consent to selling my data
+            </Text>
+          </Flex>
+
+          <Button
+            mt="lg"
+            type="submit"
+            size="lg"
+            disabled={!form.values.termsAccepted}
+          >
             Register
-          </button>
-        </Form>
-      </Formik>
+          </Button>
+        </Flex>
+      </form>
 
-      <p>
-        Have an account? <Link to={"/login"}>Login here.</Link>
-      </p>
-    </div>
+      <Text mt="lg">
+        Have an account? <Link to={"/login"}>Login instead.</Link>
+      </Text>
+    </Container>
   );
 }
