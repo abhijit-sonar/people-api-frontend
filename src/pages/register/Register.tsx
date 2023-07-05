@@ -84,7 +84,7 @@ export default function Login() {
             name="hobbies"
             type="text"
             placeholder="music movies"
-            label="Your name"
+            label="Your hobbies"
             {...form.getInputProps("hobbies")}
           ></TextInput>
 
